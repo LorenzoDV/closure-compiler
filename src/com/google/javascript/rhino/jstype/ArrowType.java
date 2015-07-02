@@ -295,7 +295,7 @@ final class ArrowType extends JSType {
   }
 
   @Override
-  String toStringHelper(boolean forAnnotations) {
+  String toStringHelper(boolean forAnnotations, boolean implicitlyNullable) {
     return "[ArrowType]";
   }
 

@@ -101,15 +101,15 @@ public final class TemplatizedType extends ProxyObjectType {
   }
 
   @Override
-  String toStringHelper(final boolean forAnnotations) {
-    String typeString = super.toStringHelper(forAnnotations);
+  String toStringHelper(final boolean forAnnotations, final boolean implicitlyNullable) {
+    String typeString = super.toStringHelper(forAnnotations, implicitlyNullable);
 
     if (!templateTypes.isEmpty()) {
       typeString += "<"
           + Joiner.on(",").join(Lists.transform(templateTypes, new Function<JSType, String>() {
             @Override
             public String apply(JSType type) {
-              return type.toStringHelper(forAnnotations);
+              return type.toStringHelper(forAnnotations, implicitlyNullable);
             }
           })) + ">";
     }

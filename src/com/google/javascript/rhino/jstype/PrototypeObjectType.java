@@ -278,7 +278,7 @@ public class PrototypeObjectType extends ObjectType {
   }
 
   @Override
-  String toStringHelper(boolean forAnnotations) {
+  String toStringHelper(boolean forAnnotations, boolean implicitlyNullable) {
     if (hasReferenceName()) {
       return getReferenceName();
     } else if (prettyPrint) {
@@ -311,7 +311,7 @@ public class PrototypeObjectType extends ObjectType {
 
         sb.append(property);
         sb.append(": ");
-        sb.append(getPropertyType(property).toStringHelper(forAnnotations));
+        sb.append(getPropertyType(property).toStringHelper(forAnnotations, implicitlyNullable));
 
         ++i;
         if (!forAnnotations && i == MAX_PRETTY_PRINTED_PROPERTIES) {

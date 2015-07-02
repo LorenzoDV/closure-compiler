@@ -95,7 +95,7 @@ class TypedCodeGenerator extends CodeGenerator {
         && !type.isEmptyType()
         && !type.isVoidType()
         && !type.isFunctionPrototypeType()) {
-      return "/** @type {" + node.getJSType().toAnnotationString() + "} */\n";
+      return "/** @type {" + node.getJSType().toAnnotationString(true) + "} */\n";
     } else {
       return "";
     }
@@ -156,7 +156,7 @@ class TypedCodeGenerator extends CodeGenerator {
         !funType.isInterface() && // Interfaces never return a value.
         !(funType.isConstructor() && retType.isVoidType())) {
       sb.append(" * ");
-      appendAnnotation(sb, "return", retType.toNonNullAnnotationString());
+      appendAnnotation(sb, "return", retType.toAnnotationString(true));
       sb.append("\n");
     }
 
@@ -227,13 +227,13 @@ class TypedCodeGenerator extends CodeGenerator {
     String typeString;
 
     if (parameterNode.isOptionalArg()) {
-      typeString = restrictByUndefined(parameterType).toNonNullAnnotationString() +
+      typeString = restrictByUndefined(parameterType).toAnnotationString(true) +
           "=";
     } else if (parameterNode.isVarArgs()) {
       typeString = "..." +
-          restrictByUndefined(parameterType).toNonNullAnnotationString();
+          restrictByUndefined(parameterType).toAnnotationString(true);
     } else {
-      typeString = parameterType.toNonNullAnnotationString();
+      typeString = parameterType.toAnnotationString(true);
     }
 
     return typeString;

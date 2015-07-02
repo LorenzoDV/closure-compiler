@@ -504,7 +504,7 @@ class ConvertToTypedInterface implements CompilerPass {
       compiler.report(JSError.make(nameNode, CONSTANT_WITHOUT_EXPLICIT_TYPE));
       return getTypeJSDoc(oldJSDoc, new Node(Token.STAR));
     } else {
-      return getTypeJSDoc(oldJSDoc, type.toNonNullAnnotationString());
+      return getTypeJSDoc(oldJSDoc, type.toAnnotationString(true));
     }
   }
 

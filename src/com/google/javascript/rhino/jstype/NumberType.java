@@ -93,7 +93,7 @@ public class NumberType extends ValueType {
   }
 
   @Override
-  String toStringHelper(boolean forAnnotations) {
+  String toStringHelper(boolean forAnnotations, boolean implicitlyNullable) {
     return getDisplayName();
   }
 

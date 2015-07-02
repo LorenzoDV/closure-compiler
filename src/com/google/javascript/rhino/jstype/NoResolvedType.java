@@ -89,7 +89,7 @@ class NoResolvedType extends NoType {
   }
 
   @Override
-  String toStringHelper(boolean forAnnotations) {
+  String toStringHelper(boolean forAnnotations, boolean implicitlyNullable) {
     return forAnnotations ? "?" : "NoResolvedType";
   }
 }

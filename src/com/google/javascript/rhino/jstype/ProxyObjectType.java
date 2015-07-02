@@ -272,8 +272,8 @@ public class ProxyObjectType extends ObjectType {
   }
 
   @Override
-  String toStringHelper(boolean forAnnotations) {
-    return referencedType.toStringHelper(forAnnotations);
+  String toStringHelper(boolean forAnnotations, boolean implicitlyNullable) {
+    return referencedType.toStringHelper(forAnnotations, implicitlyNullable);
   }
 
   @Override

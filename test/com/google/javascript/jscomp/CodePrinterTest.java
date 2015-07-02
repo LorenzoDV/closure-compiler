@@ -1018,7 +1018,7 @@ public final class CodePrinterTest extends CodePrinterTestBase {
         + "function f(a){};\n",
         "goog.java.Long;\n"
         + "/**\n"
-        + " * @param {(Array<number>|null)} a\n"
+        + " * @param {(!Array<number>|null)} a\n"
         + " * @return {undefined}\n"
         + " */\n"
         + "function f(a) {\n}\n");
@@ -1211,7 +1211,7 @@ public final class CodePrinterTest extends CodePrinterTestBase {
         "/** @const */ goog.Enum2 = goog.x ? {} : goog.Enum;",
         "var goog = goog || {};\n" +
         "/** @enum {string} */\ngoog.Enum = {FOO:\"x\", BAR:\"y\"};\n" +
-        "/** @type {(Object|{})} */\ngoog.Enum2 = goog.x ? {} : goog.Enum;\n");
+        "/** @type {(!Object|{})} */\ngoog.Enum2 = goog.x ? {} : goog.Enum;\n");
   }
 
   public void testClosureLibraryTypeAnnotationExamples() {
@@ -1222,13 +1222,13 @@ public final class CodePrinterTest extends CodePrinterTestBase {
             "goog.removeHashCode = goog.removeUid;"),
         LINE_JOINER.join(
             "/**",
-            " * @param {(Object|null)} obj",
+            " * @param {(!Object|null)} obj",
             " * @return {undefined}",
             " */",
             "goog.removeUid = function(obj) {",
             "};",
             "/**",
-            " * @param {(Object|null)} p0",
+            " * @param {(!Object|null)} p0",
             " * @return {undefined}",
             " */",
             "goog.removeHashCode = goog.removeUid;",

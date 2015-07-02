@@ -69,7 +69,7 @@ public class TemplateType extends ProxyObjectType {
   }
 
   @Override
-  String toStringHelper(boolean forAnnotations) {
+  String toStringHelper(boolean forAnnotations, boolean implicitlyNullable) {
     return name;
   }
 

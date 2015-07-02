@@ -133,8 +133,8 @@ public class EnumType extends PrototypeObjectType {
   }
 
   @Override
-  String toStringHelper(boolean forAnnotations) {
-    return forAnnotations ? "Object" : getReferenceName();
+  String toStringHelper(boolean forAnnotations, boolean implicitlyNullable) {
+    return forAnnotations ? "!Object" : getReferenceName();
   }
 
   @Override

@@ -1562,7 +1562,7 @@ public abstract class JSType implements TypeI, Serializable {
    */
   @Override
   public String toString() {
-    return toStringHelper(false);
+    return toStringHelper(false, false);
   }
 
   /**
@@ -1574,24 +1574,37 @@ public abstract class JSType implements TypeI, Serializable {
   }
 
   /**
-   * A string representation of this type, suitable for printing
-   * in type annotations at code generation time.
+   * A string representation of this type as an annotation where
+   * reference types are implicitly <b>not nullable</b>.
+   * 
+   * @see #toAnnotationString(boolean)
    */
   public final String toAnnotationString() {
-    return toStringHelper(true);
+    return toStringHelper(true, false);
   }
 
-  public final String toNonNullAnnotationString() {
-    return !isUnknownType() && !isTemplateType() && !isRecordType() && isObject()
-        ? "!" + toAnnotationString()
-        : toAnnotationString();
+  /**
+   * A string representation of this type, suitable for printing
+   * in type annotations at code generation time.
+   * 
+   * @param implicitlyNullable Whether the annotation to produce is going
+   *     to be used in a context where reference types are implicitly 
+   *     nullable (i.e. where {@code Object} means {@code Object|null}.
+   *     Setting to {@code true} will ensure that non-nullable types are
+   *     rendered correctly (e.g. by prepending a {@code !} when appropriate.
+   */
+  public final String toAnnotationString(boolean implicitlyNullable) {
+    return toStringHelper(true, implicitlyNullable);
   }
 
   /**
    * @param forAnnotations Whether this is for use in code generator
    *     annotations. Otherwise, it's for warnings.
+   * @param implicitlyNullable Whether the annotation is going to be used in
+   *     a context where reference types are not nullable by default (e.g. in
+   *     {@code extends}).  Has no effect when {@code forAnnotations} is {@code false}.
    */
-  abstract String toStringHelper(boolean forAnnotations);
+  abstract String toStringHelper(boolean forAnnotations, boolean implicitlyNullable);
 
   /**
    * Modify this type so that it matches the specified type.
