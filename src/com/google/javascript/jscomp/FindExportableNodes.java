@@ -16,13 +16,13 @@
 
 package com.google.javascript.jscomp;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+
 import com.google.common.base.Preconditions;
 import com.google.javascript.jscomp.NodeTraversal.AbstractPostOrderCallback;
 import com.google.javascript.rhino.JSDocInfo;
 import com.google.javascript.rhino.Node;
-
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 
 /**
  * Records all of the symbols and properties that should be exported.
@@ -87,6 +87,7 @@ class FindExportableNodes extends AbstractPostOrderCallback {
         }
       }
 
+      Node grandparent = parent.getParent();
       Mode mode = null;
       String export = null;
       Node context = null;
@@ -108,7 +109,6 @@ class FindExportableNodes extends AbstractPostOrderCallback {
           break;
 
         case ASSIGN:
-          Node grandparent = parent.getParent();
           if (parent.isExprResult() && !n.getLastChild().isAssign()) {
             if (grandparent != null
                 && grandparent.isScript()
@@ -137,10 +137,16 @@ class FindExportableNodes extends AbstractPostOrderCallback {
           break;
 
         case GETPROP:
-          if (allowLocalExports && parent.isExprResult()) {
-            mode = Mode.EXTERN;
-            export = n.getLastChild().getString();
-            mode = Mode.EXTERN;
+          if (parent.isExprResult()) {
+            if (grandparent != null && grandparent.isScript()) {
+              export = n.getQualifiedName();
+              context = n;
+              mode = Mode.EXPORT;
+            } else if (allowLocalExports) {
+              mode = Mode.EXTERN;
+              export = n.getLastChild().getString();
+              mode = Mode.EXTERN;
+            }
           }
           break;
 

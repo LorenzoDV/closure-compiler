@@ -553,6 +553,27 @@ public final class ExternExportsPassTest extends TestCase {
                     "var foobar = function() {\n};\n");
   }
 
+  public void testExportInterface() throws Exception {
+    compileAndCheck("/** @interface */ function a() {}\n" +
+                    "/** @return {string} */ a.prototype.method = function() {};\n" +
+                    "/** @type {string} */ a.prototype.property;\n" +
+                    "goog.exportSymbol('Foo', a);\n" +
+                    "goog.exportProperty(a.prototype, 'method', a.prototype.method);\n" +
+                    "goog.exportProperty(a.prototype, 'property', a.prototype.property);",
+                    "/**\n" +
+                    " * @interface\n" +
+                    " */\n" +
+                    "var Foo = function() {\n" +
+                    "};\n" +
+                    "/**\n" +
+                    " * @return {string}\n" +
+                    " */\n" +
+                    "Foo.prototype.method = function() {\n" +
+                    "};\n" +
+                    "/** @type {string} */\n" +
+                    "Foo.prototype.property;\n");
+  }
+
   public void testExportLocalPropertyInConstructor() throws Exception {
     compileAndCheck(
         "/** @constructor */function F() { /** @export */ this.x = 5;}"
@@ -561,6 +582,7 @@ public final class ExternExportsPassTest extends TestCase {
         + " * @constructor\n"
         + " */\n"
         + "var F = function() {\n};\n"
+        + "/** @type {number} */\n"
         + "F.prototype.x;\n");
   }
 
@@ -573,6 +595,7 @@ public final class ExternExportsPassTest extends TestCase {
         + " * @constructor\n"
         + " */\n"
         + "var F = function() {\n};\n"
+        + "/** @type {number} */\n"
         + "F.prototype.x;\n");
   }
 

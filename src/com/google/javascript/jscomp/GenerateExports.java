@@ -113,7 +113,10 @@ class GenerateExports implements CompilerPass {
     String parent = null;
     String grandparent = null;
 
-    Node node = context.getFirstChild();
+    Node node = context;
+    if (!node.isGetProp()) {
+      node = node.getFirstChild();
+    }
     if (node.isGetProp()) {
       Node parentNode = node.getFirstChild();
       parent = parentNode.getQualifiedName();

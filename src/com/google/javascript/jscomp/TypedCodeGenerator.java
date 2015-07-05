@@ -53,14 +53,19 @@ class TypedCodeGenerator extends CodeGenerator {
             || parent.isScript())) {
       if (n.isFunction()) {
         add(getFunctionAnnotation(n));
-      } else if (n.isExprResult()
-          && n.getFirstChild().isAssign()) {
-        Node assign = n.getFirstChild();
-        if (NodeUtil.isNamespaceDecl(assign.getFirstChild())) {
-          add(jsDocInfoPrinter.print(assign.getJSDocInfo()));
-        } else {
-          Node rhs = assign.getLastChild();
-          add(getTypeAnnotation(rhs));
+      } else if (n.isExprResult()) {
+        Node child = n.getFirstChild();
+        if (child.isAssign()) {
+          Node assign = child;
+          if (NodeUtil.isNamespaceDecl(assign.getFirstChild())) {
+            add(jsDocInfoPrinter.print(assign.getJSDocInfo()));
+          } else {
+            Node rhs = assign.getLastChild();
+            add(getTypeAnnotation(rhs));
+          }
+        } else if (child.isGetProp() && child.getJSType() != null
+            && !child.getJSType().isFunctionType()) {
+          add(getTypeAnnotation(child));
         }
       } else if (n.isVar()
           && n.getFirstFirstChild() != null) {
@@ -78,7 +83,7 @@ class TypedCodeGenerator extends CodeGenerator {
   private String getTypeAnnotation(Node node) {
     // Only add annotations for things with JSDoc, or function literals.
     JSDocInfo jsdoc = NodeUtil.getBestJSDocInfo(node);
-    if (jsdoc == null && !node.isFunction()) {
+    if (jsdoc == null && !(node.isFunction() || node.isGetProp())) {
       return "";
     }
 

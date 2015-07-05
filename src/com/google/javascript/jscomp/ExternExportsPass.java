@@ -195,6 +195,8 @@ final class ExternExportsPass extends NodeTraversal.AbstractPostOrderCallback
       } else {
         Node qualifiedPath = NodeUtil.newQName(compiler, path);
         if (initializer.isEmpty()) {
+          // avoid loosing the value type by keeping track of it on the path
+          qualifiedPath.setJSType(value.getJSType());
           pathDefinition = NodeUtil.newExpr(qualifiedPath);
         } else {
           pathDefinition = NodeUtil.newExpr(
@@ -582,6 +584,11 @@ final class ExternExportsPass extends NodeTraversal.AbstractPostOrderCallback
     String propertyName = definitionNode.getLastChild().getString();
     String prototypeName = constructorName + ".prototype";
     Node propertyNameNode = NodeUtil.newQName(compiler, "this." + propertyName);
+
+    // avoid loosing the value type by keeping track of it on the property name
+    if (propertyNameNode.getJSType() == null) {
+      propertyNameNode.setJSType(definitionNode.getJSType());
+    }
 
     // Add the export to the list.
     this.exports.add(new PropertyExport(prototypeName, propertyName, propertyNameNode));
