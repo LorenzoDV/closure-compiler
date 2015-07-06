@@ -1012,7 +1012,7 @@ public class FunctionType extends PrototypeObjectType implements FunctionTypeI {
       } else {
         b.append("this:");
       }
-      b.append(typeOfThis.toStringHelper(forAnnotations, implicitlyNullable));
+      b.append(typeOfThis.toStringHelper(forAnnotations, false));
     }
     if (paramNum > 0) {
       if (hasKnownTypeOfThis) {
