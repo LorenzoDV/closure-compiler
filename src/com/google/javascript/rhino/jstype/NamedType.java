@@ -154,7 +154,7 @@ public class NamedType extends ProxyObjectType {
 
   @Override
   String toStringHelper(boolean forAnnotations, boolean implicitlyNullable) {
-    return reference;
+    return (forAnnotations && implicitlyNullable ? "!" : "") + reference;
   }
 
   @Override
